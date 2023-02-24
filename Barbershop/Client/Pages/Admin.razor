@@ -1,0 +1,67 @@
+﻿@page "/admin"
+@using Barbershop
+@using Barbershop.Shared;
+@inject PublicClient _Client
+@attribute [Authorize]
+
+
+<h2>Lägg till ny produkt</h2>
+
+<EditForm Model="Edserv" class="g-3 mt-3" OnSubmit="Submit">
+	<div class="row">
+		<div class="col-md-6">
+			<label for="inputName" class="form-label">Klipning</label>
+			<InputText class="form-control" id="inputName" @bind-Value="@Edserv.Klippning"></InputText>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-6">
+			<label for="inputState" class="form-label">Pris</label>
+
+		</div>
+		<div class="col-2">
+			<label for="inputPrice" class="form-label">Price</label>
+			<InputNumber class="form-control" id="inputPrice" @bind-Value="@Edserv.Pris" />
+		</div>
+		<div class=" mt-5 col-2">
+			<InputNumber class="form-check-input" id="input" @bind-Value="@Edserv.Tid" />
+			<label class="form-check-label" for="inputName">Tid</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-2 mt-3">
+			<button type="submit" class="btn btn-dark justify-content-end">@(true ? "Uppdatera" : "Lägg till")</button>
+		</div>
+	</div>
+</EditForm>
+
+<div class="container bg-light mt-3">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Klipning</th>
+				<th>Pris</th>
+				<th>Tid</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			<Virtualize Items="allservers" Context="product">
+				<tr>
+					<td @onclick="@(() => SelectProduct(product.Id))">@product.Klippning</td>
+					<td @onclick="@(() => SelectProduct(product.Id))">@product.Pris</td>
+					<td @onclick="@(() => SelectProduct(product.Id))">@product.Tid</td>
+
+					<td>
+						<button type="button"
+								class="btn btn-outline-dark"
+								@onclick="@(() => RemoveProduct(product.Id))">
+							<i class="fa-solid fa-trash-can"></i>
+						</button>
+					</td>
+				</tr>
+			</Virtualize>
+		</tbody>
+	</table>
+</div>
+
